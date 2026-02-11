@@ -207,18 +207,6 @@ If you just want to see the app in action without building from source, pre-buil
 
 ---
 
-## Scenes Included
-
-**`lab1_phone/` (Google Pixel):**
-- **`Assets/sample.unity`** — Task 1: Basic AR Foundation scene with AR Session + XR Origin (camera passthrough only).
-- **`Assets/ar_plane.unity`** — Task 2: AR scene with Plane Manager + Point Cloud Manager and their prefabs, showing detected planes and point clouds.
-- **`Assets/Scenes/SampleScene.unity`** — Default URP sample scene (can be used as reference).
-
-**`lab1_Meta/` (Meta Quest HMD):**
-- **`Assets/Scenes/SampleScene.unity`** — Task 3: Quest scene with OVRCameraRig, Passthrough, and Grab Interaction (grabbable cube).
-
----
-
 ## Questions?
 
 If you encounter any issues, please contact your TA or post on the unit's discussion forum.
