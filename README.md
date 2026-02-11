@@ -33,22 +33,32 @@ Or download the ZIP from the repository page and extract it.
 COMSM0129_ARW/
 ├── lab1/
 │   ├── ARW_Lab_1.pdf          # Lab instructions
-│   └── lab1_phone/            # Unity project (Task 1 & 2: Google Pixel phone)
-│       ├── Assets/            # Scenes, prefabs, scripts, settings
-│       ├── Packages/          # Package dependencies (manifest.json)
-│       └── ProjectSettings/   # All project & build settings
+│   ├── lab1_phone/            # Unity project for Google Pixel (Task 1 & 2)
+│   │   ├── Assets/
+│   │   ├── Packages/
+│   │   └── ProjectSettings/
+│   └── lab1_Meta/             # Unity project for Meta Quest HMD (Task 3)
+│       ├── Assets/
+│       ├── Packages/
+│       └── ProjectSettings/
 └── README.md
 ```
 
-- **`Assets/`** — Contains all scenes, prefabs (AR Default Plane, AR Default Point Cloud), scripts, URP settings (with AR Background Renderer Feature already configured), and XR settings.
-- **`Packages/`** — Defines which packages Unity should install (AR Foundation, Google ARCore XR Plugin, etc.). Unity will download them automatically.
-- **`ProjectSettings/`** — Contains all the build settings, player settings, XR Plug-in Management config, etc. already configured for Android/ARCore.
+> **IMPORTANT: `lab1_phone/` and `lab1_Meta/` are two completely separate Unity projects.** They have different packages, different XR plugins, and different project settings. **Do NOT mix their settings or copy settings from one to the other.** Always open them as independent projects in Unity Hub.
 
-> The `Library/`, `Logs/`, `Temp/`, and other regenerable folders are **not** included in the repository. Unity will regenerate them automatically when you first open the project.
+- **`Assets/`** — Scenes, prefabs, scripts, URP settings, XR settings.
+- **`Packages/`** — Package dependencies. Unity downloads them automatically on first open.
+- **`ProjectSettings/`** — Build settings, player settings, XR Plug-in Management config, etc.
+
+> The `Library/`, `Logs/`, `Temp/`, and other regenerable folders are **not** included in the repository. Unity will regenerate them automatically when you first open each project.
+
+### Building on Lab 1 for Future Labs
+
+You can use the Lab 1 projects as a starting point for later labs. There is no need to create a new Unity project from scratch each time — simply continue working in the `lab1_phone/` or `lab1_Meta/` project and add new scenes, scripts, and assets as needed.
 
 ---
 
-## Lab 1 Instructions
+## Lab 1 — Task 1 & 2: Google Pixel Phone (`lab1_phone/`)
 
 ### Step 1: Open in Unity Hub
 
@@ -82,13 +92,9 @@ When the project opens for the first time, you will see a dialog saying:
 
 When the project first opens, you may see an empty "Untitled" scene instead of the actual AR scene. You need to load the correct scene manually:
 
-1. In the **Project** window (bottom panel), navigate to `Assets/`.
-2. You will find the following scene files:
-   - **`sample.unity`** — Task 1 scene (AR Session + XR Origin, camera passthrough only)
-   - **`ar_plane.unity`** — Task 2 scene (with AR Plane Manager + AR Point Cloud Manager)
-3. **Double-click** the scene you want to open (e.g. `sample.unity` for Task 1, or `ar_plane.unity` for Task 2).
-4. If prompted to save the current "Untitled" scene, click **Don't Save**.
-5. You should now see the scene hierarchy with **AR Session** and **XR Origin** components.
+1. In the **Project** window (bottom panel), navigate to `Assets/Scenes`.
+2. You will find the `SampleScene` and drag it to the editor.
+3. You should now see the scene hierarchy with **AR Session** and **XR Origin** components.
 
 ### Step 6: Add Scene to Build
 
@@ -133,9 +139,52 @@ When the project first opens, you may see an empty "Untitled" scene instead of t
 
 ---
 
+## Lab 1 — Task 3: Meta Quest HMD (`lab1_Meta/`)
+
+> **This is a separate Unity project from the phone project above.** Do NOT open `lab1_Meta/` in the same Unity editor as `lab1_phone/`. They have completely different packages (Meta XR SDK vs AR Foundation) and project settings.
+
+### Step 1: Open in Unity Hub
+
+1. Open **Unity Hub**.
+2. Click **Open** and navigate to `lab1/lab1_Meta/`.
+3. Open the project in Unity Editor and wait for the import to complete.
+
+### Step 2: Handle Dialogs
+
+- If the **"Unsupported Input Handling"** dialog appears, click **Yes**.
+- If prompted about Meta XR settings or Project Validation issues, follow the prompts or click **Fix All**.
+
+### Step 3: Switch to Android Platform
+
+1. Go to **File > Build Profiles**.
+2. Select **Android** and click **Switch Platform** if not already active.
+
+### Step 4: Load the Scene
+
+1. In the **Project** window, navigate to `Assets/Scenes/`.
+2. Double-click **SampleScene.unity** to open it.
+3. If prompted to save the "Untitled" scene, click **Don't Save**.
+4. You should see the Meta Quest scene with **OVRCameraRig**, Passthrough, and Grab Interaction components.
+
+### Step 5: Add Scene to Build
+
+1. Go to **File > Build Profiles**.
+2. Click **Add Open Scenes** to add the current scene.
+3. Remove any "Untitled" scene from the list.
+
+### Step 6: Build and Run on Quest
+
+1. Connect your Meta Quest headset via USB-C cable.
+2. Put on the headset and accept the **"Allow USB debugging"** prompt if it appears.
+3. In **File > Build Profiles**, click **Refresh** under **Run Device** and select your Quest device.
+4. Click **Build And Run** and choose a location to save the APK.
+5. The app will launch automatically on the headset. You should see passthrough mode with a virtual cube you can grab.
+
+---
+
 ## Pre-built APK
 
-If you just want to see the app in action without building from source, a pre-built `.apk` file is available separately. Ask your TA for the download link.
+If you just want to see the app in action without building from source, pre-built `.apk` files are available separately. Ask your TA for the download link.
 
 <!-- TA: Replace this with your actual distribution link (e.g., Teams, OneDrive, Google Drive) -->
 
@@ -160,9 +209,13 @@ If you just want to see the app in action without building from source, a pre-bu
 
 ## Scenes Included
 
+**`lab1_phone/` (Google Pixel):**
 - **`Assets/sample.unity`** — Task 1: Basic AR Foundation scene with AR Session + XR Origin (camera passthrough only).
 - **`Assets/ar_plane.unity`** — Task 2: AR scene with Plane Manager + Point Cloud Manager and their prefabs, showing detected planes and point clouds.
 - **`Assets/Scenes/SampleScene.unity`** — Default URP sample scene (can be used as reference).
+
+**`lab1_Meta/` (Meta Quest HMD):**
+- **`Assets/Scenes/SampleScene.unity`** — Task 3: Quest scene with OVRCameraRig, Passthrough, and Grab Interaction (grabbable cube).
 
 ---
 
