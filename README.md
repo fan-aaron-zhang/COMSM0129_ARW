@@ -32,12 +32,30 @@ Or download the ZIP from the repository page and extract it.
 ```
 COMSM0129_ARW/
 ├── lab1/
-│   ├── ARW_Lab_1.pdf          # Lab instructions
+│   ├── ARW_Lab_1.pdf          # Lab 1 instructions
 │   ├── lab1_phone/            # Unity project for Google Pixel (Task 1 & 2)
 │   │   ├── Assets/
 │   │   ├── Packages/
 │   │   └── ProjectSettings/
 │   └── lab1_Meta/             # Unity project for Meta Quest HMD (Task 3)
+│       ├── Assets/
+│       ├── Packages/
+│       └── ProjectSettings/
+├── lab2/
+│   ├── ARW_Lab_2.pdf          # Lab 2 instructions
+│   └── lab2/                  # Unity project for Lab 2 (Pixel phone)
+│       ├── Assets/
+│       ├── Packages/
+│       └── ProjectSettings/
+├── lab3/
+│   ├── ARW_Lab_3.pdf          # Lab 3 instructions
+│   └── lab3/                  # Unity project for Lab 3 (Pixel phone)
+│       ├── Assets/
+│       ├── Packages/
+│       └── ProjectSettings/
+├── lab4/
+│   ├── ARW_Lab_4.pdf          # Lab 4 instructions
+│   └── lab4/                  # Unity project for Lab 4 (Pixel phone)
 │       ├── Assets/
 │       ├── Packages/
 │       └── ProjectSettings/
@@ -182,11 +200,77 @@ When the project first opens, you may see an empty "Untitled" scene instead of t
 
 ---
 
-## Pre-built APK
+## Lab 2 & 3 — Important Note: Robot Prefab Material Fix
+These project is based on the same phone project from Lab 1. Open it the same way as `lab1_phone/`.
 
-If you just want to see the app in action without building from source, pre-built `.apk` files are available separately. Ask your TA for the download link.
+ Or open `lab2/lab2` or `lab3/lab3` in Unity Hub. The steps (import, handle dialogs, switch to Android, load scene, add to build, build and run) are the same as Lab 1 — refer to the Lab 1 instructions above.
 
-<!-- TA: Replace this with your actual distribution link (e.g., Teams, OneDrive, Google Drive) -->
+Labs 2 and 3 use a robot prefab from the `MobileARCourse` package. This prefab uses **Built-in Render Pipeline materials**, which are **invisible on Android** in our URP project.
+You must convert the materials before building.
+
+### Fix the Robot Materials
+
+1. In the Project window, navigate to `Assets/MobileARCourse/Materials/`.
+2. Select **all materials** in the folder (Cmd+A).
+3. Go to **Edit > Rendering > Materials > Convert Built-in Materials to URP**.
+4. The materials will be upgraded. However, the robot prefab's child objects may still reference the old embedded materials.
+5. **Double-click** the `robot` prefab (in `MobileARCourse/Prefabs/`) to enter Prefab Mode.
+6. Click each child object (head, body, etc.), find **Mesh Renderer > Materials** in the Inspector, and drag `MobileARCourse/Materials/RobotMat` into the material slot.
+7. Save and exit Prefab Mode.
+
+After this fix, the robot preview should change from **pink/magenta** to its normal textured appearance.
+
+### Fix the Robot Rigidbody
+
+The robot prefab has a **Rigidbody** with **Use Gravity = true**. In AR, there is no physical ground, so the robot will fall through the plane and disappear instantly after spawning.
+
+1. Open the `robot` prefab.
+2. Select the **Rigidbody** component.
+3. **Uncheck Use Gravity** and **check Is Kinematic**.
+
+### Lab 3 Task 3: Using a New Script for 3D Motions
+
+If you created a new script for Task 3 (e.g. `motionsManager`) to handle image tracking with animations, remember to:
+
+1. **Uncheck** (disable) the old `AR Unit Lab` script on XR Origin — otherwise both scripts will run and conflict with each other.
+2. Make sure your new script (e.g. `Motions Manager`) is **checked** (enabled).
+3. The `AR Tracked Image Manager` component should have **Tracked Image Prefab** set to **None** (as instructed), since your new script handles instantiation manually.
+
+---
+
+## Lab 4 — Intelligent Tracking (`lab4/lab4/`)
+
+This project is based on the same phone project from Lab 1. Open it the same way as `lab1_phone/`.
+
+or open `lab4/lab4/` in Unity Hub. The steps (import, handle dialogs, switch to Android, load scene, add to build, build and run) are the same as Lab 1 — refer to the Lab 1 instructions above.
+
+### Lab 4 Supplementary Notes
+
+Please read these notes carefully before troubleshooting. Some features in Lab 4 have **platform limitations** on ARCore (Android).
+
+#### Task 1 — Plane Classification
+
+- **If all detected planes are red
+ (Other):** This is normal behaviour and means your code is running correctly. Plane classification (Semantics) requires:
+  - A **supported device** (e.g. Pixel 8 with the latest ARCore). Older devices may classify all planes as `None`, which falls into the `else` (Other/red) branch.
+  - **Sufficient lighting** and enough scanning time. Move the phone slowly around the room, scanning floors and tables from multiple angles for at least 30 seconds.
+  - Planes are often detected as `None` first and reclassified later. The red colour may change to green (Floor) or blue (Table) after continued scanning.
+- **As long as you can see red planes appearing on surfaces, your code is working.** The classification accuracy depends on the device and environment, not your code.
+
+#### Task 2 — Human Body Tracking
+
+- **`ARHumanBodyManager` is an ARKit (iOS) feature and is NOT supported on ARCore (Android/Pixel).** This means body tracking will never detect a person on Pixel phones.
+- **If the app shows "Scanning..." on screen, your code is correct.** This means:
+  - The AR subsystem started successfully.
+  - The `BodyDebug` script is running and checking for bodies.
+  - No body is detected because ARCore does not provide body tracking data.
+- **If the app shows "AR Subsystem Stopped!", something is wrong** — check your AR Human Body Manager configuration.
+- The purpose of this task is for you to learn how to write body tracking code using AR Foundation's API. Seeing "Scanning..." confirms your implementation is correct, even though the feature is not available on Android.
+
+#### Task 3 — Environment Occlusion
+
+- **Environment Depth** works on supported Pixel devices (Pixel 4+). You should be able to see real-world objects occluding the virtual cube.
+- **Human Segmentation Stencil/Depth Mode** is ARKit-only and will have no effect on Android. You can still set it to "Best" in the Inspector, but it will not do anything on the Pixel phone. Only the **Environment Depth Mode** setting matters for ARCore.
 
 ---
 
@@ -204,6 +288,9 @@ If you just want to see the app in action without building from source, pre-buil
 | **Phone not detected in Run Device** | Make sure USB Debugging is enabled, the phone is connected, and you clicked **Refresh** in Build Profiles. |
 | **AR features not working on phone** | Ensure **Google Play Services for AR** is installed on the phone from the Play Store. |
 | **Camera background is black / not showing** | Verify that `Assets/Settings/Mobile_Renderer.asset` has the **AR Background Renderer Feature** added. Select it in the Project window and check the Inspector. |
+| **(Lab 4) All planes are red / no classification** | This is expected on many devices. See Lab 4 Supplementary Notes above. Scan slowly for 30+ seconds with good lighting. |
+| **(Lab 4) Body tracking shows "Scanning..." forever** | This is expected on Android. ARHumanBodyManager is ARKit-only. "Scanning..." means your code is correct. See Lab 4 Supplementary Notes. |
+| **(Lab 4) Occlusion not working** | Ensure **Environment Depth Mode** is set to **Best** on the AROcclusionManager. Human Segmentation modes are ARKit-only and won't work on Pixel. |
 
 ---
 
