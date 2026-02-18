@@ -321,6 +321,7 @@ GameObject:
   - component: {fileID: 494686900}
   - component: {fileID: 494686899}
   - component: {fileID: 494686901}
+  - component: {fileID: 494686902}
   m_Layer: 0
   m_Name: CenterEyeAnchor
   m_TagString: MainCamera
@@ -446,6 +447,19 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &494686902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 494686897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecd3786b2ac1043b685bb02b2bd25b3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rayDistance: 100
 --- !u!1 &567443466
 GameObject:
   m_ObjectHideFlags: 0
@@ -1195,9 +1209,10 @@ GameObject:
   - component: {fileID: 1642515165}
   - component: {fileID: 1642515164}
   - component: {fileID: 1642515163}
+  - component: {fileID: 1642515170}
   m_Layer: 0
   m_Name: '[BuildingBlock] Cube'
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1360,6 +1375,19 @@ Transform:
   - {fileID: 1865467923}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1642515170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642515162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98acf139ab4ce470f9f67dddb7e81139, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightMaterial: {fileID: 2100000, guid: bdf4c128427a94c2a9e797fd4f3bbbb3, type: 2}
 --- !u!1 &1714419139
 GameObject:
   m_ObjectHideFlags: 0
